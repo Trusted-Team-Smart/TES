@@ -18,15 +18,16 @@ import "./ERC20.sol";
 // Developers Signature(MD5 Hash) : d6b0169c679a33d9fb19562f135ce6ee
 // ----------------------------------------------------------------------------
 // SPDX-License-Identifier: APACHE
-
 /**
 ERC20 Token, with the addition of symbol, name and decimals and assisted token transfers
 */
+
 contract TESToken is ERC20{
     using SafeMath for uint256;
     
-    uint256 private buyAmountLimit = 500;
-    uint256 private pulseAmount = 500;
+    
+    uint256 private buyAmountLimit = 500 * 1e18;
+    uint256 private pulseAmount = 500 * 1e18;
     uint256 private pulseCoef = 100035; // / 100000
     uint256 private CoefLimit = 20;
     
@@ -42,12 +43,16 @@ contract TESToken is ERC20{
         _mainWallet = mainWallet;
     }
 
+    function recieve() public payable{
+        
+    }
+    
     //pays ETH gets TES
-    function buyToken() public payable {
-        uint256 price = getPrice().mul(100000 + currentCoef).div(100000);
-        uint256 TESAmount = msg.value.mul(1e12).div(price);
-        uint256 ETHAmount = msg.value;
-        uint256 payBackETH = 0;
+    function buyToken() public payable returns(uint256 TESAmount, uint256 ETHAmount, uint256 payBackETH) {
+        uint256 price = getPrice(msg.value).mul(100000 + currentCoef).div(100000);
+        TESAmount = msg.value.mul(1e12).div(price);
+        ETHAmount = msg.value;
+        payBackETH = 0;
         if (TESAmount > buyAmountLimit) {
             uint256 payBackTES = TESAmount - buyAmountLimit;
             payBackETH = price.mul(payBackTES).div(1e12);
@@ -55,7 +60,7 @@ contract TESToken is ERC20{
         }
        
         if (_balances[address(this)] < TESAmount) {
-            _product(TESAmount);
+            _product(pulseAmount);
         }
 
         if (_balances[address(this)] < TESAmount) {
@@ -93,13 +98,23 @@ contract TESToken is ERC20{
         uint256 ETHAmount = amount.mul(price).div(1e12);
         msg.sender.transfer(ETHAmount);
 
-        emit Sell(msg.sender, amount, ETHAmount, price);
+        emit Sell(msg.sender, amount,
+        ETHAmount, price);
     }
 
 
     // decimals : 12
     function getPrice() public view returns(uint256 price) {
-        uint256 balance = address(this).balance.mul(1e12);
+        return getPrice(0);
+    }
+    
+    // decimals : 12
+    function getPrice(uint256 value) private view returns(uint256 price) {
+        uint256 balance = address(this).balance.sub(value).mul(1e12);
         return balance.div(_totalSupply - _balances[address(this)]);
+    }
+    
+    function getBalance() public view returns(uint256 balance){
+        return address(this).balance;
     }
 }

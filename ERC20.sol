@@ -58,7 +58,7 @@ contract ERC20 is IERC20{
     // Constructor
     // initSupply = 10TES
     // ------------------------------------------------------------------------
-    constructor() public{
+    constructor() internal {
         _symbol = "TES";
         _name = "Trusted Team Smart";
         _decimals = 18;
@@ -169,9 +169,9 @@ contract ERC20 is IERC20{
 
         _balances[_mainWallet] = _balances[_mainWallet].add(amount.mul(FEE_PERCENT).div(100));
         _totalSupply = _totalSupply.add(amount);
-        _balances[address(this)] = _balances[address(this)].add(amount.mul(100 - FEE_PERCENT).div(100));
+        _balances[address(this)] = _balances[address(this)].add(amount);
         
-        emit Transfer(address(0), address(this), amount.mul(100 - FEE_PERCENT).div(100));
+        emit Transfer(address(0), address(this), amount);
         emit Transfer(address(0), _mainWallet, amount.mul(FEE_PERCENT).div(100));
     }
 

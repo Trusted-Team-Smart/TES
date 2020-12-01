@@ -2,6 +2,8 @@ pragma solidity >=0.6.0 <0.8.0;
 // ----------------------------------------------------------------------------
 // Lib: Safe Math
 // ----------------------------------------------------------------------------
+// SPDX-License-Identifier: APACHE
+
 
 library SafeMath {
     function sub(uint256 a, uint256 b) internal pure returns (uint256) {

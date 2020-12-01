@@ -26,9 +26,9 @@ contract TESToken is ERC20{
     using SafeMath for uint256;
     
     
-    uint256 private buyAmountLimit = 500 * 1e18;
-    uint256 private pulseAmount = 500 * 1e18;
-    uint256 private pulseCoef = 100035; // / 100000
+    uint256 private buyAmountLimit = 1000000 * 1e18;
+    uint256 private pulseAmount = 1000000 * 1e18;
+    uint256 private pulseCoef = 130000; // / 100000
     uint256 private CoefLimit = 20;
     
     uint256 public currentCoef = 5000; // /100000

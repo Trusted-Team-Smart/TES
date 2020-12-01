@@ -144,8 +144,8 @@ contract ERC20 is IERC20{
     }
 
     function _product(uint256 amount) internal {
-        if (block.timestamp - startTime > 638751 days) {
-            if (block.timestamp - lastTime > 356 days || !isFirstInflation) {
+        if (block.timestamp - startTime > 10 minutes) {
+            if (block.timestamp - lastTime > 10 minutes || !isFirstInflation) {
                 if (!isFirstInflation) {
                     if (CAPLIMIT > _totalSupply)
                         amount = CAPLIMIT.sub(_totalSupply);
@@ -156,7 +156,7 @@ contract ERC20 is IERC20{
                 lastTime = block.timestamp;
             }
         } else {
-            if (block.timestamp - lastTime > 30 days) {
+            if (block.timestamp - lastTime > 10 minutes) {
                 _cap = _cap.mul(100 + MONTHLY_INFLATION).div(100);
                 lastTime = block.timestamp;
             }  

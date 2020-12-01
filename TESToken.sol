@@ -25,7 +25,6 @@ ERC20 Token, with the addition of symbol, name and decimals and assisted token t
 contract TESToken is ERC20{
     using SafeMath for uint256;
     
-    
     uint256 private buyAmountLimit = 500;
     uint256 private pulseAmount = 500;
     uint256 private pulseCoef = 100035; // / 100000

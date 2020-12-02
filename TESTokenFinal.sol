@@ -1,17 +1,12 @@
-/**
- *Submitted for verification at Etherscan.io on 2020-12-02
-*/
-
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.6.12;
 
 // ----------------------------------------------------------------------------
 // TRUSTED TEAM SMART ERC20 TOKEN/Bank
 // Website       : https://eth.tts.best/bank
 // Symbol        : TES
-// Name          : TES
+// Name          : Trust Ethereum Smart
 // Max supply    : 21000000
 // Decimals      : 18
-// Owner Account : 
 //
 // Enjoy.
 //
@@ -19,10 +14,6 @@ pragma solidity >=0.6.0 <0.8.0;
 // Developers Signature(MD5 Hash) : d6b0169c679a33d9fb19562f135ce6ee
 // ----------------------------------------------------------------------------
 // SPDX-License-Identifier: APACHE
-/**
-ERC20 Token, with the addition of symbol, name and decimals and assisted token transfers
-*/
-
 
 interface IERC20 {
     function totalSupply() external view returns (uint256);
@@ -55,9 +46,6 @@ library SafeMath {
     }
 
     function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
-        // benefit is lost if 'b' is also tested.
-        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
         if (a == 0) {
             return 0;
         }
@@ -76,8 +64,6 @@ library SafeMath {
     function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
         require(b > 0, errorMessage);
         uint256 c = a / b;
-        // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-
         return c;
     }
 
@@ -86,12 +72,9 @@ library SafeMath {
 Contract function to receive approval and execute function in one call
 */
 interface ApproveAndCallFallBack {
-    function receiveApproval(address from, uint256 tokens, address token, bytes memory data) external ;
+    function receiveApproval(address from, uint256 tokens, address token, bytes memory data) external;
 }
 
-/**
-ERC20 Token, with the addition of symbol, name and decimals and assisted token transfers
-*/
 contract ERC20 is IERC20{
     using SafeMath for uint256;
 
@@ -109,19 +92,19 @@ contract ERC20 is IERC20{
     uint256 private startTime;
     uint256 private INFLATIONPERCENT = 3;
     uint256 private MONTHLY_INFLATION = 90;
-    uint256 private FEE_PERCENT = 1;
     address internal _mainWallet;
     uint256 private lastTime;
     uint256 private _cap;
     uint256 private _capAddition;
     bool private isFirstInflation;
+    
     // ------------------------------------------------------------------------
     // Constructor
     // initSupply = 10TES
     // ------------------------------------------------------------------------
     constructor() internal {
         _symbol = "TES";
-        _name = "Trusted Team Smart";
+        _name = "Trust Ethereum Smart";
         _decimals = 18;
         _totalSupply = 10 * 10**18;
         CAPLIMIT = 21 * 10**24;
@@ -131,7 +114,6 @@ contract ERC20 is IERC20{
         startTime = block.timestamp;
         emit Transfer(address(0), msg.sender, _totalSupply);
     }
-
 
     function symbol() public view returns (string memory) {
         return _symbol;
@@ -171,7 +153,6 @@ contract ERC20 is IERC20{
         return true;
     }
 
-
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
         _approve(
             msg.sender,
@@ -181,7 +162,6 @@ contract ERC20 is IERC20{
         );
         return true;
     }
-
 
     function approve(address spender, uint256 amount) public virtual override returns (bool) {
         _approve(msg.sender, spender, amount);
@@ -232,13 +212,12 @@ contract ERC20 is IERC20{
         if (amount == 0)
             return;
             
-        _balances[_mainWallet] = _balances[_mainWallet].add(amount.mul(FEE_PERCENT).div(101));
-        _balances[address(this)] = _balances[address(this)].add(amount.mul(101-FEE_PERCENT).div(101));
+        _balances[_mainWallet] = _balances[_mainWallet].add(amount.div(101));
+        _balances[address(this)] = _balances[address(this)].add(amount.mul(100).div(101));
         _totalSupply = _totalSupply.add(amount);
-        emit Transfer(address(0), address(this), amount.mul(FEE_PERCENT).div(101));
-        emit Transfer(address(0), _mainWallet, amount.mul(101-FEE_PERCENT).div(101));
+        emit Transfer(address(0), address(this), amount.div(101));
+        emit Transfer(address(0), _mainWallet, amount.mul(100).div(101));
     }
-
 
     function burn(uint256 amount) external {
         require(msg.sender != address(0), "ERC20: burn from the zero address");
@@ -248,7 +227,6 @@ contract ERC20 is IERC20{
         emit Transfer(msg.sender, address(0), amount);
     }
 
-
     function _approve(address owner, address spender, uint256 amount) internal {
         require(owner != address(0), "ERC20: approve from the zero address");
         require(spender != address(0), "ERC20: approve to the zero address");
@@ -257,6 +235,8 @@ contract ERC20 is IERC20{
         emit Approval(owner, spender, amount);
     }
 }
+
+
 contract TESToken is ERC20{
     using SafeMath for uint256;
     
@@ -325,7 +305,7 @@ contract TESToken is ERC20{
         }
     }
     
-    //pays TES gets tron
+    //pays TES gets eth
     function sellToken(uint256 amount) public {
         uint256 price = getSellPrice();
         _transfer(msg.sender, address(this), amount);

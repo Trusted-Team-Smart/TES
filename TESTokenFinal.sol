@@ -13,7 +13,7 @@ pragma solidity ^0.6.12;
 // (c) by TRUSTED TEAM SMART 2020. MIT Licence.
 // Developers Signature(MD5 Hash) : d6b0169c679a33d9fb19562f135ce6ee
 // ----------------------------------------------------------------------------
-// SPDX-License-Identifier: APACHE
+// SPDX-License-Identifier: MIT
 
 interface IERC20 {
     function totalSupply() external view returns (uint256);

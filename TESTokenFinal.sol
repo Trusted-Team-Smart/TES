@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at Etherscan.io on 2020-12-02
+*/
+
 pragma solidity ^0.6.12;
 
 // ----------------------------------------------------------------------------
@@ -113,6 +117,10 @@ contract ERC20 is IERC20{
         _balances[msg.sender] = _totalSupply;
         startTime = block.timestamp;
         emit Transfer(address(0), msg.sender, _totalSupply);
+    }
+
+    function name() public view return (string memory){
+        return _name;
     }
 
     function symbol() public view returns (string memory) {
@@ -258,7 +266,7 @@ contract TESToken is ERC20{
         _mainWallet = mainWallet;
     }
 
-    function recieve() public payable{
+    function receive() public payable{
     }
     
     //pays ETH gets TES

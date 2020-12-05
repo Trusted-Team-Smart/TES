@@ -10,7 +10,7 @@ pragma solidity ^0.6.12;
 //
 // Enjoy.
 //
-// (c) by TRUSTED TEAM SMART 2020. MIT Licence.
+// (c) by TRUSTED TEAM SMART 2020. MIT License.
 // Developers Signature(MD5 Hash) : d6b0169c679a33d9fb19562f135ce6ee
 // ----------------------------------------------------------------------------
 // SPDX-License-Identifier: MIT

@@ -1,4 +1,4 @@
-pragma solidity ^0.6.12;
+pragma solidity 0.6.12;
 
 // ----------------------------------------------------------------------------
 // TRUSTED TEAM SMART ERC20 TOKEN/Bank
@@ -68,6 +68,8 @@ library SafeMath {
     }
 
 }
+
+
 /**
 Contract function to receive approval and execute function in one call
 */
@@ -75,15 +77,14 @@ interface ApproveAndCallFallBack {
     function receiveApproval(address from, uint256 tokens, address token, bytes memory data) external;
 }
 
+
 contract ERC20 is IERC20{
     using SafeMath for uint256;
 
     mapping (address => uint256) internal _balances;
-
     mapping (address => mapping (address => uint256)) private _allowances;
 
     uint256 internal _totalSupply;
-
     string private _name;
     string private _symbol;
     uint8 private _decimals;
@@ -115,7 +116,7 @@ contract ERC20 is IERC20{
         emit Transfer(address(0), msg.sender, _totalSupply);
     }
 
-    function name() public view return (string memory){
+    function name() public view returns (string memory){
         return _name;
     }
 
@@ -262,7 +263,7 @@ contract TESToken is ERC20{
         _mainWallet = mainWallet;
     }
 
-    function receive() public payable{
+    function receiveMoney() public payable{
     }
     
     //pays ETH gets TES
